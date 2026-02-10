@@ -18,8 +18,14 @@ public class CarGoState : ICarState
 
     public void Exit()
     {
-        bool red = car.ActiveTraficLight !=null && car.ActiveTraficLight.IsRed;
-        if(red || car.CarAheadStoppedClose)
+        
+
+    }
+
+    public void Tick()
+    {
+        bool red = car.ActiveTraficLight != null && car.ActiveTraficLight.IsRed;
+        if (red || car.CarAheadStoppedClose)
         {
             sm.Change(car.StopState);
             return;
@@ -32,11 +38,5 @@ public class CarGoState : ICarState
             return;
         }
         car.SetTargetSpeed(car.goSpeed);
-
-    }
-
-    public void Tick()
-    {
-
     }
 }
