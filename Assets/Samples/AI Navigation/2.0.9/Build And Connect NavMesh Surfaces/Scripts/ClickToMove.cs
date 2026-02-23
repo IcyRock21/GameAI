@@ -28,13 +28,14 @@ namespace Unity.AI.Navigation.Samples
                     m_Agent.destination = m_HitInfo.point;
             }
 
-            if (m_Agent.remainingDistance <= m_Agent.stoppingDistance)
+            if (m_Agent.remainingDistance <= m_Agent.stoppingDistance && !(m_animation == null))
             {
                 m_animation.SetBool("IsWalking", false);
             }
             else
             {
-                m_animation.SetBool("IsWalking", true);
+                if(!(m_animation == null))
+                { m_animation.SetBool("IsWalking", true); }
             }
 
         }
