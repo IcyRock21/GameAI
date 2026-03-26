@@ -30,14 +30,14 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //problem if there are no more followers, null exception
+        //problem if there are no more enemyUnits, null exception
         /*        if (player.playerFolCount <= enemyFolCount)
                 {
                     m_Agent.SetDestination(bestTarget.transform.position);
                     if (followerPatrol.hasLeader)
                     {
                         Debug.Log("Follweor has leaeder: " + followerPatrol.hasLeader);
-                        followers.Remove(bestTarget);
+                        enemyUnits.Remove(bestTarget);
                         GetClosestFollower(transform.position);
                         followerPatrol = bestTarget.GetComponent<FollowerPatrol>();
                     }
