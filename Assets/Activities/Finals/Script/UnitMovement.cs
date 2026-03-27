@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class UnitMovement : MonoBehaviour
 {
     [SerializeField] bool isRedTeam;
-    [SerializeField] int moveSpeed;
     [SerializeField] GameObject bestTarget;
     [SerializeField] UnitAttack unitAttack;
     public List<GameObject> enemyUnits;
@@ -29,12 +28,19 @@ public class UnitMovement : MonoBehaviour
 
     private void Update()
     {
+        CheckEnemyCount();
         if (unitState == UnitState.Walk)
         {
-            GetClosestTarget(this.transform.position);
-            
-            agent.SetDestination(bestTarget.transform.position);
-            unitAttack.Attack();
+            GetClosestTarget(transform.position);
+            if(bestTarget != null && enemyUnits.Count > 0)
+            {
+                agent.SetDestination(bestTarget.transform.position);
+                unitAttack.Attack();
+            }
+            else
+            {
+                agent.SetDestination(transform.position);
+            }
         }
     }
 
@@ -58,20 +64,32 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
+
+
     public void CheckEnemyCount()
     {
+        enemyUnits.Clear();
+
+        List<GameObject> foundObjects = new List<GameObject>();
+
         if (team == Team.Red)
         {
-            List<GameObject> foundObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("BlueTeam"));
-            enemyUnits.AddRange(foundObjects);
-            Debug.Log(foundObjects.Count);
+            foundObjects.AddRange(GameObject.FindGameObjectsWithTag("BlueTeam"));
         }
-
         else
         {
-            List<GameObject> foundObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("RedTeam"));
-            enemyUnits.AddRange(foundObjects);
+            foundObjects.AddRange(GameObject.FindGameObjectsWithTag("RedTeam"));
         }
 
+        foreach (var obj in foundObjects)
+        {
+            if (obj != null)
+            {
+                enemyUnits.Add(obj);
+            }
+        }
+
+
+        Debug.Log("Found " + foundObjects.Count + " enemies");
     }
 }

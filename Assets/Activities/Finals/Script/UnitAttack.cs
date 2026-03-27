@@ -27,10 +27,6 @@ public class UnitAttack : MonoBehaviour
             MageAttack();
         }
 
-        if (unitMovement.unitType == UnitType.Bow)
-        {
-            BowAttack();
-        }
 
         if (unitMovement.unitType == UnitType.Tank)
         {
@@ -54,16 +50,10 @@ public class UnitAttack : MonoBehaviour
 
     }
 
-    public void BowAttack()
-    {
-
-    }
-
     public void MageAttack()
     {
         
 
-        RaycastHit hit;
         Collider[] enemy = Physics.OverlapSphere(transform.position, mageRadius, enemyteamMask);
         if(enemy.Length > 0 )
         {
@@ -99,11 +89,6 @@ public class UnitAttack : MonoBehaviour
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, mageRadius);
-        }
-
-        if (unitMovement.unitType == UnitType.Bow)
-        {
-
         }
 
         if (unitMovement.unitType == UnitType.Tank)

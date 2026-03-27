@@ -16,7 +16,6 @@ public enum UnitType
 {
     Berzerker,
     Tank,
-    Bow,
     Mage
 }
 

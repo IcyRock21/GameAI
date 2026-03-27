@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 public class UnitHealth : MonoBehaviour
 {
     [SerializeField] int unitHealth, maxHealth;
+    public bool isDead = false;
     [SerializeField] UnitMovement unitMovement;
 
     private void Start()
@@ -16,7 +17,7 @@ public class UnitHealth : MonoBehaviour
 
     public void MinusHealth (int damage)
     {
-        unitHealth += damage;
+        unitHealth -= damage;
     }
 
     public void Checkhealth ()
