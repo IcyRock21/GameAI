@@ -1,63 +1,45 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class UnitMovement : MonoBehaviour
 {
     [SerializeField] bool isRedTeam;
     [SerializeField] int moveSpeed;
     [SerializeField] GameObject bestTarget;
+    [SerializeField] UnitAttack unitAttack;
     public List<GameObject> enemyUnits;
-    [SerializeField] UnitType unitType;
-    [SerializeField] UnitState unitState;
-    [SerializeField] Team team; //for flexibility and more team counts
+    public UnitType unitType;
+    public UnitState unitState;
+    public Team team; //for flexibility and more team counts
 
-    [SerializeField] int unitHealth;
+    public NavMeshAgent agent;
+
 
 
     private void Start()
     {
-       if (team == Team.Red)
-        {
-            GameObject[] foundObjects = GameObject.FindGameObjectsWithTag("BlueTeam");
-        }
+        unitAttack = GetComponent<UnitAttack>();
+        agent = GetComponent<NavMeshAgent>();
+        CheckEnemyCount();
+        GetClosestTarget(transform.position);
 
-        else
-        {
-            GameObject[] foundObjects = GameObject.FindGameObjectsWithTag("RedTeam");
-        }
     }
 
     private void Update()
     {
         if (unitState == UnitState.Walk)
         {
-            //Unit move towards closest enemy
-            //if Unit is inside
+            GetClosestTarget(this.transform.position);
+            
+            agent.SetDestination(bestTarget.transform.position);
+            unitAttack.Attack();
         }
     }
 
-    public void BerzerkerAttack()
-    {
 
-    }
-
-    public void TankAttack()
-    {
-
-    }
-
-    public void BowAttack()
-    {
-
-    }
-
-    public void MageAttack()
-    {
-
-    }
-
-
-    public void GetClosestFollower(Vector3 startPosition) //same script as 
+    public void GetClosestTarget(Vector3 startPosition) //same script as 
     {
         bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
@@ -74,5 +56,22 @@ public class UnitMovement : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
+    }
+
+    public void CheckEnemyCount()
+    {
+        if (team == Team.Red)
+        {
+            List<GameObject> foundObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("BlueTeam"));
+            enemyUnits.AddRange(foundObjects);
+            Debug.Log(foundObjects.Count);
+        }
+
+        else
+        {
+            List<GameObject> foundObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("RedTeam"));
+            enemyUnits.AddRange(foundObjects);
+        }
+
     }
 }

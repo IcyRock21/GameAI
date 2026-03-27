@@ -6,6 +6,8 @@ TagManager:
   tags:
   - NoLeader
   - EnemyLeader
+  - RedTeam
+  - BlueTeam
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - Player
   - Car
   - EnemyLeader
-  - 
-  - 
+  - RedTeam
+  - BlueTeam
   - 
   - 
   - 
