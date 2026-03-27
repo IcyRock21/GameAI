@@ -67,7 +67,7 @@ public class UnitAttack : MonoBehaviour
 
     IEnumerator MageAttacking()
     {
-
+        unitMovement.animator.SetBool("IsAttacking", true);
         unitMovement.unitState = UnitState.Attack;
         unitMovement.agent.isStopped = true;
         //instantiate watermelon

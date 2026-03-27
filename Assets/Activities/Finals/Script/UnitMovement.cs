@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class UnitMovement : MonoBehaviour
 {
+    [SerializeField] GameObject canvas;
     [SerializeField] bool isRedTeam;
     [SerializeField] GameObject bestTarget;
     [SerializeField] UnitAttack unitAttack;
@@ -12,6 +13,7 @@ public class UnitMovement : MonoBehaviour
     public UnitType unitType;
     public UnitState unitState;
     public Team team; //for flexibility and more team counts
+    public Animator animator;
 
     public NavMeshAgent agent;
 
@@ -19,6 +21,8 @@ public class UnitMovement : MonoBehaviour
 
     private void Start()
     {
+        canvas = GameObject.FindWithTag("Finish");
+        animator = GetComponent<Animator>();
         unitAttack = GetComponent<UnitAttack>();
         agent = GetComponent<NavMeshAgent>();
         CheckEnemyCount();
@@ -28,12 +32,30 @@ public class UnitMovement : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("enemyunits: "+ enemyUnits.Count);
         CheckEnemyCount();
+        if(enemyUnits == null||enemyUnits.Count <= 0)
+        {
+            if(team == Team.Red)
+            {
+                canvas.GetComponent<WinPanel>().RedWin();
+                Debug.Log("redteamwins!");
+                Time.timeScale = 0.1f;
+            }
+            else
+            {
+                canvas.GetComponent<WinPanel>().BlueWin();
+                Debug.Log("blueteamwins!");
+                Time.timeScale = 0.1f;
+            }
+        }
+
         if (unitState == UnitState.Walk)
         {
             GetClosestTarget(transform.position);
             if(bestTarget != null && enemyUnits.Count > 0)
             {
+                animator.SetBool("IsAttacking", false);
                 agent.SetDestination(bestTarget.transform.position);
                 unitAttack.Attack();
             }
@@ -88,8 +110,5 @@ public class UnitMovement : MonoBehaviour
                 enemyUnits.Add(obj);
             }
         }
-
-
-        Debug.Log("Found " + foundObjects.Count + " enemies");
     }
 }
